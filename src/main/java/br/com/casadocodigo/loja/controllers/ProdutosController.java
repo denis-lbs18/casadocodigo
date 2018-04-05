@@ -20,7 +20,7 @@ import br.com.casadocodigo.loja.models.TipoPreco;
 import br.com.casadocodigo.loja.validation.ProdutoValidation;
 
 @Controller
-@RequestMapping(value = "produtos")
+@RequestMapping(value = "/produtos")
 public class ProdutosController {
 	@InitBinder
 	public void InitBinder(WebDataBinder binder) {
