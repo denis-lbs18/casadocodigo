@@ -28,7 +28,7 @@ public class CarrinhoComprasController {
 	public ModelAndView add(Integer produtoId, TipoPreco tipo) {
 		ModelAndView modelAndView = new ModelAndView("redirect:/carrinho");
 		CarrinhoItem carrinhoItem = criaItem(produtoId, tipo);
-		carrinho.add(carrinhoItem);
+		this.carrinho.add(carrinhoItem);
 		return modelAndView;
 	}
 
@@ -41,5 +41,11 @@ public class CarrinhoComprasController {
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView itens() {
 		return new ModelAndView("/carrinho/itens");
+	}
+
+	@RequestMapping("/remover")
+	public ModelAndView remover(Integer produtoId, TipoPreco tipoPreco) {
+		this.carrinho.remover(produtoId, tipoPreco);
+		return new ModelAndView("redirect:/carrinho");
 	}
 }
