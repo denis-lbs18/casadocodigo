@@ -11,14 +11,21 @@ import org.springframework.format.support.FormattingConversionService;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import br.com.casadocodigo.loja.controllers.HomeController;
 import br.com.casadocodigo.loja.daos.ProdutoDAO;
+import br.com.casadocodigo.loja.infra.FileSaver;
+import br.com.casadocodigo.loja.models.CarrinhoCompras;
 
 @EnableWebMvc
-@ComponentScan(basePackageClasses = { HomeController.class, ProdutoDAO.class, FileSaver.class })
-public class AppWebConfiguration {
+@ComponentScan(basePackageClasses = { HomeController.class, ProdutoDAO.class, FileSaver.class, CarrinhoCompras.class })
+public class AppWebConfiguration extends WebMvcConfigurerAdapter {
+	private static final String DEFAULT_DATETIME_FORMAT = "dd/MM/yyyy";
+	private static final String DEFAULT_ENCODING = "UTF-8";
+	private static final String MESSAGES = "/WEB-INF/messages";
 	private static final String PREFIX_VIEWS = "/WEB-INF/views/";
 	private static final String SUFFIX_VIEWS = ".jsp";
 
@@ -27,14 +34,15 @@ public class AppWebConfiguration {
 		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
 		resolver.setPrefix(PREFIX_VIEWS);
 		resolver.setSuffix(SUFFIX_VIEWS);
+		resolver.setExposedContextBeanNames("carrinhoCompras");
 		return resolver;
 	}
 
 	@Bean
 	public MessageSource messageSource() {
 		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-		messageSource.setBasename("/WEB-INF/messages");
-		messageSource.setDefaultEncoding("UTF-8");
+		messageSource.setBasename(MESSAGES);
+		messageSource.setDefaultEncoding(DEFAULT_ENCODING);
 		messageSource.setCacheSeconds(1);
 
 		return messageSource;
@@ -44,10 +52,15 @@ public class AppWebConfiguration {
 	public FormattingConversionService mvcConversionService() {
 		DefaultFormattingConversionService conversionService = new DefaultFormattingConversionService();
 		DateFormatterRegistrar formatterRegistrar = new DateFormatterRegistrar();
-		formatterRegistrar.setFormatter(new DateFormatter("dd/MM/yyyy"));
+		formatterRegistrar.setFormatter(new DateFormatter(DEFAULT_DATETIME_FORMAT));
 		formatterRegistrar.registerFormatters(conversionService);
 
 		return conversionService;
+	}
+
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
 	}
 
 	@Bean

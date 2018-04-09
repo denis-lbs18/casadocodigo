@@ -1,4 +1,4 @@
-package br.com.casadocodigo.loja.conf;
+package br.com.casadocodigo.loja.infra;
 
 import java.io.File;
 import java.io.IOException;
