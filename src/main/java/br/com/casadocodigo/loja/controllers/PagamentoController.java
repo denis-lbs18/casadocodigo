@@ -41,6 +41,6 @@ public class PagamentoController {
 				model.addFlashAttribute("message", "Valor maior que o permitido");
 				return new ModelAndView("redirect:/produtos");
 			}
-		}
+		};
 	}
 }
