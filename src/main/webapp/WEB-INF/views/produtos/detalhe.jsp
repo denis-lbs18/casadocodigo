@@ -39,6 +39,9 @@
 <link href="${contextPath}resources/css/produtos.css" rel="stylesheet"
 	type="text/css" media="all" />
 <link rel="canonical" href="http://www.casadocodigo.com.br/" />
+<c:url value="/resources/css" var="cssPath" />
+    <link rel="stylesheet" href="${cssPath}/bootstrap.min.css" />
+    <link rel="stylesheet" href="${cssPath}/bootstrap-theme.min.css" />
 </head>
 <body>
 
